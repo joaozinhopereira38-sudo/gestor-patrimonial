@@ -28,11 +28,11 @@ export default function Sidebar() {
         </Link>
 
         <Link
-          href="/projecao"
-          className="block text-zinc-300 hover:text-white transition"
-        >
-          Projeção
-        </Link>
+  href="/simulador"
+  className="block text-zinc-300 hover:text-white transition"
+>
+  Simulador
+</Link>
 
         <Link
           href="/metas"
@@ -40,6 +40,20 @@ export default function Sidebar() {
         >
           Metas
         </Link>
+
+        <Link
+  href="/perfil"
+  className="block text-zinc-300 hover:text-white transition"
+>
+  Perfil do Investidor
+</Link>
+
+<Link
+  href="/analise"
+  className="block text-zinc-300 hover:text-white transition"
+>
+  Análise
+</Link>
 
         <Link
           href="/configuracoes"
