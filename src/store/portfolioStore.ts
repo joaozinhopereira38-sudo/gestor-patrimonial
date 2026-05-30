@@ -13,14 +13,27 @@ export type HistoryPoint = {
   total: number;
 };
 
+export type Aporte = {
+  id: number;
+  value: number;
+  description: string;
+  date: string;
+};
+
 type PortfolioStore = {
   assets: Asset[];
 
   history: HistoryPoint[];
 
+  aportes: Aporte[];
+
   goal: number;
 
   addAsset: (asset: Asset) => void;
+
+  addAporte: (
+    aporte: Aporte
+  ) => void;
 
   updateHistory: (total: number) => void;
 
@@ -73,13 +86,24 @@ export const usePortfolioStore =
           },
         ],
 
+        aportes: [],
+
         goal: 1000000,
 
         addAsset: (asset) =>
+
           set((state) => ({
             assets: [
               ...state.assets,
               asset,
+            ],
+          })),
+
+        addAporte: (aporte) =>
+          set((state) => ({
+            aportes: [
+              ...state.aportes,
+              aporte,
             ],
           })),
 
