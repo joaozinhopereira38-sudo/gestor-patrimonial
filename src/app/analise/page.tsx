@@ -31,6 +31,8 @@ const score = Math.min(
 
 const recommendations: string[] = [];
 
+const diagnostics: string[] = [];
+
 const categoryPercentages =
   Object.entries(categoryTotals).map(
     ([category, value]) => ({
@@ -53,6 +55,18 @@ if (
 }
 
 if (
+  !assets.some(
+    (asset) =>
+      asset.category ===
+      "Internacional"
+  )
+) {
+  diagnostics.push(
+    "⚠ Ausência de exposição internacional"
+  );
+}
+
+if (
   categoryTotals["Renda Fixa"] >
   total * 0.7
 ) {
@@ -61,9 +75,32 @@ if (
   );
 }
 
+if (
+  categoryTotals["Renda Fixa"] >
+  total * 0.7
+) {
+  diagnostics.push(
+    "⚠ Concentração elevada em renda fixa"
+  );
+}
+
 if (categoryCount >= 4) {
   recommendations.push(
     "Excelente diversificação"
+  );
+}
+
+if (categoryCount >= 4) {
+  diagnostics.push(
+    "✓ Excelente diversificação"
+  );
+}
+
+if (
+  diagnostics.length === 0
+) {
+  diagnostics.push(
+    "✓ Carteira equilibrada"
   );
 }
 
@@ -151,6 +188,27 @@ if (categoryCount >= 4) {
       </div>
     </div>
   ))}
+</div>
+
+<h2 className="text-2xl font-bold mb-6">
+  Diagnóstico de Risco
+</h2>
+
+<div className="space-y-4 mb-10">
+  {diagnostics.map(
+    (item, index) => (
+      <div
+        key={index}
+        className="
+          bg-zinc-800
+          p-4
+          rounded-2xl
+        "
+      >
+        {item}
+      </div>
+    )
+  )}
 </div>
 
   <h2 className="text-2xl font-bold mb-6">
