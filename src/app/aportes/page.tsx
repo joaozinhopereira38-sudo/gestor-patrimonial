@@ -11,6 +11,25 @@ export default function AportesPage() {
     addAporte,
   } = usePortfolioStore();
 
+  const totalAportado = aportes.reduce(
+    (acc, aporte) => acc + aporte.value,
+    0
+  );
+  
+  const quantidadeAportes =
+    aportes.length;
+  
+  const ultimoAporte =
+    aportes.length > 0
+      ? aportes[aportes.length - 1].value
+      : 0;
+  
+  const ticketMedio =
+    quantidadeAportes > 0
+      ? totalAportado /
+        quantidadeAportes
+      : 0;
+
   const [value, setValue] = useState("");
   const [description, setDescription] =
     useState("");
@@ -44,6 +63,55 @@ export default function AportesPage() {
             Controle de Aportes
           </h1>
         </div>
+
+        <div className="grid grid-cols-4 gap-4 mb-8">
+
+<div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+  <p className="text-zinc-400 text-sm">
+    Total Aportado
+  </p>
+
+  <h3 className="text-2xl font-bold mt-2">
+    R$ {totalAportado.toLocaleString("pt-BR")}
+  </h3>
+</div>
+
+<div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+  <p className="text-zinc-400 text-sm">
+    Quantidade
+  </p>
+
+  <h3 className="text-2xl font-bold mt-2">
+    {quantidadeAportes}
+  </h3>
+</div>
+
+<div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+  <p className="text-zinc-400 text-sm">
+    Último Aporte
+  </p>
+
+  <h3 className="text-2xl font-bold mt-2">
+    R$ {ultimoAporte.toLocaleString("pt-BR")}
+  </h3>
+</div>
+
+<div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+  <p className="text-zinc-400 text-sm">
+    Ticket Médio
+  </p>
+
+  <h3 className="text-2xl font-bold mt-2">
+    R$ {ticketMedio.toLocaleString(
+      "pt-BR",
+      {
+        maximumFractionDigits: 0,
+      }
+    )}
+  </h3>
+</div>
+
+</div>
 
         <div
           className="
