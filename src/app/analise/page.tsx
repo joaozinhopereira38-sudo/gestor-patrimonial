@@ -10,6 +10,63 @@ export default function AnalisePage() {
     0
   );
 
+  const categoryTotals = assets.reduce(
+  (acc, asset) => {
+    acc[asset.category] =
+      (acc[asset.category] || 0) +
+      asset.value;
+
+    return acc;
+  },
+  {} as Record<string, number>
+);
+
+const categoryCount =
+  Object.keys(categoryTotals).length;
+
+const score = Math.min(
+  50 + categoryCount * 10,
+  100
+);
+
+const recommendations: string[] = [];
+
+const categoryPercentages =
+  Object.entries(categoryTotals).map(
+    ([category, value]) => ({
+      category,
+      percentage:
+        (value / total) * 100,
+    })
+  );
+
+if (
+  !assets.some(
+    (asset) =>
+      asset.category ===
+      "Internacional"
+  )
+) {
+  recommendations.push(
+    "Adicionar exposição internacional"
+  );
+}
+
+if (
+  categoryTotals["Renda Fixa"] >
+  total * 0.7
+) {
+  recommendations.push(
+    "Reduzir concentração em renda fixa"
+  );
+}
+
+if (categoryCount >= 4) {
+  recommendations.push(
+    "Excelente diversificação"
+  );
+}
+
   return (
     <main className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-7xl mx-auto">
@@ -48,28 +105,78 @@ export default function AnalisePage() {
           rounded-3xl
           p-8
         ">
-          <h2 className="text-2xl font-bold mb-6">
-            Diagnóstico Inicial
-          </h2>
+          <div
+  className="
+    bg-zinc-900
+    border
+    border-zinc-800
+    rounded-3xl
+    p-8
+  "
+>
+  <h2 className="text-2xl font-bold mb-6">
+    Score da Carteira
+  </h2>
 
-          <div className="space-y-4">
+  <h3 className="text-5xl font-bold mb-2">
+    {score}/100
+  </h3>
 
-            <div className="bg-zinc-800 p-4 rounded-2xl">
-              ✓ Carteira carregada com sucesso
-            </div>
+  <p className="text-green-400 mb-8">
+    Qualidade da diversificação
+  </p>
 
-            <div className="bg-zinc-800 p-4 rounded-2xl">
-              ✓ Dados prontos para análise
-            </div>
+<h2 className="text-2xl font-bold mb-6">
+  Distribuição da Carteira
+</h2>
 
-            <div className="bg-zinc-800 p-4 rounded-2xl">
-              ✓ Sistema de diagnóstico ativo
-            </div>
+<div className="space-y-4 mb-10">
+  {categoryPercentages.map((item) => (
+    <div key={item.category}>
+      <div className="flex justify-between mb-2">
+        <span>{item.category}</span>
 
-          </div>
+        <span>
+          {item.percentage.toFixed(1)}%
+        </span>
+      </div>
+
+      <div className="w-full bg-zinc-800 rounded-full h-3">
+        <div
+          className="bg-white h-3 rounded-full"
+          style={{
+            width: `${item.percentage}%`,
+          }}
+        />
+      </div>
+    </div>
+  ))}
+</div>
+
+  <h2 className="text-2xl font-bold mb-6">
+    Recomendações
+  </h2>
+
+  <div className="space-y-4">
+    {recommendations.map(
+      (item, index) => (
+        <div
+          key={index}
+          className="
+            bg-zinc-800
+            p-4
+            rounded-2xl
+          "
+        >
+          {item}
         </div>
+      )
+    )}
+    </div>
+</div>
 
       </div>
+    </div>
     </main>
   );
 }
