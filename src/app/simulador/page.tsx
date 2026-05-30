@@ -2,6 +2,15 @@
 
 import { useState } from "react";
 
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+} from "recharts";
+
 export default function SimuladorPage() {
   const [initialValue, setInitialValue] = useState("");
   const [monthlyValue, setMonthlyValue] = useState("");
@@ -53,6 +62,32 @@ const targetYears =
 
 const remainingMonths =
   targetMonths % 12;
+
+  const chartData = [];
+
+let chartValue = initial;
+
+for (
+  let year = 0;
+  year <= Number(years);
+  year++
+) {
+  chartData.push({
+    year: `Ano ${year}`,
+    value: Math.round(chartValue),
+  });
+
+  for (
+    let month = 0;
+    month < 12;
+    month++
+  ) {
+    chartValue =
+      chartValue *
+        (1 + monthlyRate) +
+      monthly;
+  }
+}
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white p-6">
@@ -150,6 +185,39 @@ const remainingMonths =
       Tempo estimado para atingir a independência financeira
     </p>
   </div>
+
+  <div className="mt-8">
+  <h3 className="text-2xl font-bold mb-6">
+    Evolução Projetada
+  </h3>
+
+  <div className="flex justify-center">
+    <LineChart
+      width={700}
+      height={300}
+      data={chartData}
+    >
+      <CartesianGrid
+        strokeDasharray="3 3"
+        stroke="#3f3f46"
+      />
+
+      <XAxis dataKey="year" />
+
+      <YAxis />
+
+      <Tooltip />
+
+      <Line
+        type="monotone"
+        dataKey="value"
+        stroke="#22c55e"
+        strokeWidth={4}
+      />
+    </LineChart>
+  </div>
+</div>
+
 </div>
 
 </div>
