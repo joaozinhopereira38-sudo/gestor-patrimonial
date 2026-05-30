@@ -61,6 +61,22 @@ const categoryPercentages =
   },
 ];
 
+const rebalanceSuggestions =
+  idealPortfolio.map((item) => {
+    const current =
+      categoryPercentages.find(
+        (c) =>
+          c.category ===
+          item.category
+      )?.percentage || 0;
+
+    return {
+      category: item.category,
+      difference:
+        item.ideal - current,
+    };
+  });
+
 if (
   !assets.some(
     (asset) =>
@@ -249,6 +265,33 @@ if (
       </div>
     );
   })}
+</div>
+
+<h2 className="text-2xl font-bold mb-6">
+  Plano de Rebalanceamento
+</h2>
+
+<div className="space-y-4 mb-10">
+  {rebalanceSuggestions.map(
+    (item) => (
+      <div
+        key={item.category}
+        className="
+          bg-zinc-800
+          p-4
+          rounded-2xl
+        "
+      >
+        {item.difference > 0
+          ? `Aumentar ${item.category} em ${item.difference.toFixed(1)}%`
+          : item.difference < 0
+          ? `Reduzir ${item.category} em ${Math.abs(
+              item.difference
+            ).toFixed(1)}%`
+          : `${item.category} está ideal`}
+      </div>
+    )
+  )}
 </div>
 
 <h2 className="text-2xl font-bold mb-6">
