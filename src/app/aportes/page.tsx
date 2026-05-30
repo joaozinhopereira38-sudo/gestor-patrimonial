@@ -2,10 +2,34 @@
 
 import { useState } from "react";
 
+import { usePortfolioStore } from "@/store/portfolioStore";
+
 export default function AportesPage() {
+
+  const {
+    aportes,
+    addAporte,
+  } = usePortfolioStore();
+
   const [value, setValue] = useState("");
   const [description, setDescription] =
     useState("");
+
+    const handleAddAporte = () => {
+      if (!value) return;
+    
+      addAporte({
+        id: Date.now(),
+        value: Number(value),
+        description,
+        date: new Date().toLocaleDateString(
+          "pt-BR"
+        ),
+      });
+    
+      setValue("");
+      setDescription("");
+    };
 
   return (
     <main className="min-h-screen text-white">
@@ -69,9 +93,10 @@ export default function AportesPage() {
             "
           />
 
-          <button
-            className="
-              bg-white
+<button
+  onClick={handleAddAporte}
+  className="
+    bg-white
               text-black
               px-6
               py-3
@@ -96,9 +121,45 @@ export default function AportesPage() {
             Histórico
           </h2>
 
-          <p className="text-zinc-400">
-            Nenhum aporte registrado
+          <div className="space-y-4">
+  {aportes.length === 0 ? (
+    <p className="text-zinc-400">
+      Nenhum aporte registrado
+    </p>
+  ) : (
+    aportes
+      .slice()
+      .reverse()
+      .map((aporte) => (
+        <div
+          key={aporte.id}
+          className="
+            bg-zinc-800
+            rounded-xl
+            p-4
+            flex
+            justify-between
+            items-center
+          "
+        >
+          <div>
+            <p className="font-semibold">
+              {aporte.description || "Aporte"}
+            </p>
+
+            <p className="text-zinc-400 text-sm">
+              {aporte.date}
+            </p>
+          </div>
+
+          <p className="font-bold text-green-400">
+            R$ {aporte.value.toLocaleString("pt-BR")}
           </p>
+        </div>
+      ))
+  )}
+</div>
+
         </div>
 
       </div>
