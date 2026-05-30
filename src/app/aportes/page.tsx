@@ -123,9 +123,44 @@ export default function AportesPage() {
 
           <div className="space-y-4">
   {aportes.length === 0 ? (
-    <p className="text-zinc-400">
-      Nenhum aporte registrado
-    </p>
+    <div className="space-y-4">
+    {aportes.length === 0 ? (
+      <p className="text-zinc-400">
+        Nenhum aporte registrado
+      </p>
+    ) : (
+      aportes
+        .slice()
+        .reverse()
+        .map((aporte) => (
+          <div
+            key={aporte.id}
+            className="
+              bg-zinc-800
+              rounded-xl
+              p-4
+              flex
+              justify-between
+              items-center
+            "
+          >
+            <div>
+              <p className="font-semibold">
+                {aporte.description || "Aporte"}
+              </p>
+  
+              <p className="text-zinc-400 text-sm">
+                {aporte.date}
+              </p>
+            </div>
+  
+            <p className="font-bold text-green-400">
+              R$ {aporte.value.toLocaleString("pt-BR")}
+            </p>
+          </div>
+        ))
+    )}
+  </div>
   ) : (
     aportes
       .slice()
