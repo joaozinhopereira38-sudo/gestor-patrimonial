@@ -42,6 +42,25 @@ const categoryPercentages =
     })
   );
 
+  const idealPortfolio = [
+  {
+    category: "Renda Fixa",
+    ideal: 40,
+  },
+  {
+    category: "FII",
+    ideal: 20,
+  },
+  {
+    category: "ETF",
+    ideal: 30,
+  },
+  {
+    category: "Internacional",
+    ideal: 10,
+  },
+];
+
 if (
   !assets.some(
     (asset) =>
@@ -188,6 +207,48 @@ if (
       </div>
     </div>
   ))}
+</div>
+
+<h2 className="text-2xl font-bold mb-6">
+  Carteira Atual x Ideal
+</h2>
+
+<div className="space-y-4 mb-10">
+  {idealPortfolio.map((item) => {
+    const current =
+      categoryPercentages.find(
+        (c) =>
+          c.category ===
+          item.category
+      )?.percentage || 0;
+
+    return (
+      <div
+        key={item.category}
+        className="
+          bg-zinc-800
+          p-4
+          rounded-2xl
+        "
+      >
+        <div className="flex justify-between">
+          <span>
+            {item.category}
+          </span>
+
+          <span>
+            Atual:
+            {" "}
+            {current.toFixed(1)}%
+            {" | "}
+            Ideal:
+            {" "}
+            {item.ideal}%
+          </span>
+        </div>
+      </div>
+    );
+  })}
 </div>
 
 <h2 className="text-2xl font-bold mb-6">
