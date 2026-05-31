@@ -185,6 +185,19 @@ const rebalanceSuggestions =
     };
   });
 
+  const adherence =
+  rebalanceSuggestions.reduce(
+    (acc, item) =>
+      acc + Math.abs(item.difference),
+    0
+  );
+
+const profileCompatibility =
+  Math.max(
+    0,
+    100 - adherence
+  );
+
 if (
   !assets.some(
     (asset) =>
@@ -306,6 +319,16 @@ if (
   <h3 className="text-5xl font-bold mb-2">
     {score}/100
   </h3>
+
+  <div className="mt-6 mb-6">
+  <p className="text-zinc-400 mb-2">
+    Compatibilidade com Perfil
+  </p>
+
+  <h3 className="text-3xl font-bold">
+    {profileCompatibility.toFixed(0)}%
+  </h3>
+</div>
 
   <p className="text-green-400 mb-8">
     Qualidade da diversificação
