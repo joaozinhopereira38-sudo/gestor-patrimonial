@@ -2,8 +2,13 @@
 
 import { usePortfolioStore } from "@/store/portfolioStore";
 
+import { useOnboardingStore } from "@/store/onboardingStore";
+
 export default function AnalisePage() {
   const { assets } = usePortfolioStore();
+
+  const { riskProfile } =
+  useOnboardingStore();
 
   const total = assets.reduce(
     (acc, asset) => acc + asset.value,
@@ -42,24 +47,66 @@ const categoryPercentages =
     })
   );
 
-  const idealPortfolio = [
-  {
-    category: "Renda Fixa",
-    ideal: 40,
-  },
-  {
-    category: "FII",
-    ideal: 20,
-  },
-  {
-    category: "ETF",
-    ideal: 30,
-  },
-  {
-    category: "Internacional",
-    ideal: 10,
-  },
-];
+  let idealPortfolio = [
+    {
+      category: "Renda Fixa",
+      ideal: 40,
+    },
+    {
+      category: "FII",
+      ideal: 20,
+    },
+    {
+      category: "ETF",
+      ideal: 30,
+    },
+    {
+      category: "Internacional",
+      ideal: 10,
+    },
+  ];
+  
+  if (riskProfile === "conservador") {
+    idealPortfolio = [
+      {
+        category: "Renda Fixa",
+        ideal: 70,
+      },
+      {
+        category: "FII",
+        ideal: 15,
+      },
+      {
+        category: "ETF",
+        ideal: 10,
+      },
+      {
+        category: "Internacional",
+        ideal: 5,
+      },
+    ];
+  }
+  
+  if (riskProfile === "arrojado") {
+    idealPortfolio = [
+      {
+        category: "Renda Fixa",
+        ideal: 20,
+      },
+      {
+        category: "FII",
+        ideal: 20,
+      },
+      {
+        category: "ETF",
+        ideal: 40,
+      },
+      {
+        category: "Internacional",
+        ideal: 20,
+      },
+    ];
+  }
 
 const rebalanceSuggestions =
   idealPortfolio.map((item) => {
@@ -152,6 +199,11 @@ if (
             Análise da Carteira
           </h1>
         </div>
+
+        <p className="text-green-400 mt-4">
+  Perfil identificado:{" "}
+  {riskProfile || "Moderado"}
+</p>
 
         <div className="
           bg-zinc-900
