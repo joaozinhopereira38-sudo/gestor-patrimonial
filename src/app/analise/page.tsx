@@ -198,6 +198,30 @@ const profileCompatibility =
     100 - adherence
   );
 
+  let compatibilityLabel =
+  "Excelente aderência";
+
+if (
+  profileCompatibility < 90
+) {
+  compatibilityLabel =
+    "Boa aderência";
+}
+
+if (
+  profileCompatibility < 70
+) {
+  compatibilityLabel =
+    "Atenção";
+}
+
+if (
+  profileCompatibility < 50
+) {
+  compatibilityLabel =
+    "Fora do perfil";
+}
+
 if (
   !assets.some(
     (asset) =>
@@ -328,6 +352,11 @@ if (
   <h3 className="text-3xl font-bold">
     {profileCompatibility.toFixed(0)}%
   </h3>
+
+  <p className="text-green-400 mt-2">
+  {compatibilityLabel}
+</p>
+
 </div>
 
   <p className="text-green-400 mb-8">
