@@ -20,12 +20,20 @@ export type Aporte = {
   date: string;
 };
 
+export type Goal = {
+  id: number;
+  title: string;
+  target: number;
+};
+
 type PortfolioStore = {
   assets: Asset[];
 
   history: HistoryPoint[];
 
   aportes: Aporte[];
+
+  goals: Goal[];
 
   goal: number;
 
@@ -35,11 +43,16 @@ type PortfolioStore = {
     aporte: Aporte
   ) => void;
 
+  addGoal: (
+  goal: Goal
+) => void;
+
   updateHistory: (total: number) => void;
 
   removeAsset: (id: number) => void;
 
   setGoal: (value: number) => void;
+  
 };
 
 export const usePortfolioStore =
@@ -88,6 +101,14 @@ export const usePortfolioStore =
 
         aportes: [],
 
+        goals: [
+  {
+    id: 1,
+    title: "Independência Financeira",
+    target: 2000000,
+  },
+],
+
         goal: 1000000,
 
         addAsset: (asset) =>
@@ -106,6 +127,14 @@ export const usePortfolioStore =
               aporte,
             ],
           })),
+
+          addGoal: (goal) =>
+  set((state) => ({
+    goals: [
+      ...state.goals,
+      goal,
+    ],
+  })),
 
         removeAsset: (id) =>
           set((state) => ({
