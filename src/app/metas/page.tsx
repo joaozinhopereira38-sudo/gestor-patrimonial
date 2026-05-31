@@ -18,17 +18,27 @@ const [title, setTitle] =
 const [target, setTarget] =
   useState("");
 
+const [deadline, setDeadline] =
+  useState("");
+
   const handleAddGoal = () => {
-    if (!title || !target) return;
+    if (
+      !title ||
+      !target ||
+      !deadline
+    )
+      return;
   
     addGoal({
       id: Date.now(),
       title,
       target: Number(target),
+      deadline,
     });
   
     setTitle("");
     setTarget("");
+    setDeadline("");
   };
 
   const total = assets.reduce(
@@ -93,6 +103,21 @@ const [target, setTarget] =
       mb-4
     "
   />
+
+<input
+  type="date"
+  value={deadline}
+  onChange={(e) =>
+    setDeadline(e.target.value)
+  }
+  className="
+    w-full
+    p-4
+    rounded-xl
+    bg-zinc-800
+    mb-4
+  "
+/>
 
   <button
     onClick={handleAddGoal}
