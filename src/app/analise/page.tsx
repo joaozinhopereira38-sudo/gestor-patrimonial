@@ -29,10 +29,71 @@ export default function AnalisePage() {
 const categoryCount =
   Object.keys(categoryTotals).length;
 
-const score = Math.min(
-  50 + categoryCount * 10,
-  100
-);
+let score = 50;
+
+const scoreReasons: string[] = [];
+
+/* Diversificação */
+
+if (categoryCount >= 4) {
+  score += 20;
+
+  scoreReasons.push(
+    "Boa diversificação"
+  );
+} else if (categoryCount >= 3) {
+  score += 10;
+
+  scoreReasons.push(
+    "Diversificação razoável"
+  );
+}
+
+/* Internacional */
+
+if (
+  assets.some(
+    (asset) =>
+      asset.category ===
+      "Internacional"
+  )
+) {
+  score += 10;
+
+  scoreReasons.push(
+    "Possui exposição internacional"
+  );
+} else {
+  scoreReasons.push(
+    "Ausência de ativos internacionais"
+  );
+}
+
+/* Concentração */
+
+const maxCategory =
+  Math.max(
+    ...Object.values(
+      categoryTotals
+    )
+  );
+
+if (
+  maxCategory <
+  total * 0.6
+) {
+  score += 10;
+
+  scoreReasons.push(
+    "Boa distribuição patrimonial"
+  );
+} else {
+  scoreReasons.push(
+    "Alta concentração em uma categoria"
+  );
+}
+
+score = Math.min(score, 100);
 
 const recommendations: string[] = [];
 
@@ -249,6 +310,23 @@ if (
   <p className="text-green-400 mb-8">
     Qualidade da diversificação
   </p>
+
+  <div className="space-y-3 mb-8">
+  {scoreReasons.map(
+    (reason, index) => (
+      <div
+        key={index}
+        className="
+          bg-zinc-800
+          p-3
+          rounded-xl
+        "
+      >
+        {reason}
+      </div>
+    )
+  )}
+</div>
 
 <h2 className="text-2xl font-bold mb-6">
   Distribuição da Carteira
