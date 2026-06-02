@@ -139,6 +139,33 @@ const [deadline, setDeadline] =
             const progress =
               (total / goal.target) * 100;
 
+              const remaining =
+              goal.target - total;
+
+              const deadlineDate =
+  new Date(goal.deadline);
+
+const today =
+  new Date();
+
+const monthsRemaining =
+  Math.max(
+    0,
+    (deadlineDate.getFullYear() -
+      today.getFullYear()) *
+      12 +
+      (deadlineDate.getMonth() -
+        today.getMonth())
+  );
+
+const yearsRemaining =
+  Math.floor(
+    monthsRemaining / 12
+  );
+
+const extraMonths =
+  monthsRemaining % 12;
+
             return (
               <div
                 key={goal.id}
@@ -174,7 +201,20 @@ const [deadline, setDeadline] =
                 </p>
 
                 <p className="text-zinc-500 mb-4">
-  Prazo: {goal.deadline}
+   Prazo: {goal.deadline}
+</p>
+
+<p className="text-zinc-400 mb-4">
+  Faltam: R${" "}
+  {remaining.toLocaleString(
+    "pt-BR"
+  )}
+</p>
+
+<p className="text-zinc-400 mb-4">
+  Tempo restante:{" "}
+  {yearsRemaining} anos e{" "}
+  {extraMonths} meses
 </p>
 
                 <div className="w-full bg-zinc-800 rounded-full h-3">
