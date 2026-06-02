@@ -173,6 +173,10 @@ const [deadline, setDeadline] =
                   )}
                 </p>
 
+                <p className="text-zinc-500 mb-4">
+  Prazo: {goal.deadline}
+</p>
+
                 <div className="w-full bg-zinc-800 rounded-full h-3">
                   <div
                     className="bg-green-500 h-3 rounded-full"
