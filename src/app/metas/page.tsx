@@ -136,35 +136,41 @@ const [deadline, setDeadline] =
 
         <div className="space-y-6">
           {goals.map((goal) => {
-            const progress =
+              const progress =
               (total / goal.target) * 100;
 
               const remaining =
               goal.target - total;
 
               const deadlineDate =
-  new Date(goal.deadline);
+              new Date(goal.deadline);
 
-const today =
-  new Date();
+              const today =
+              new Date();
 
-const monthsRemaining =
-  Math.max(
-    0,
-    (deadlineDate.getFullYear() -
-      today.getFullYear()) *
-      12 +
-      (deadlineDate.getMonth() -
-        today.getMonth())
+              const monthsRemaining =
+              Math.max(
+              0,
+              (deadlineDate.getFullYear() -
+               today.getFullYear()) *
+              12 +
+               (deadlineDate.getMonth() -
+               today.getMonth())
   );
 
-const yearsRemaining =
-  Math.floor(
-    monthsRemaining / 12
-  );
+              const yearsRemaining =
+              Math.floor(
+              monthsRemaining / 12
+             );
 
-const extraMonths =
-  monthsRemaining % 12;
+              const extraMonths =
+              monthsRemaining % 12;
+
+              const monthlyContribution =
+  monthsRemaining > 0
+    ? remaining /
+      monthsRemaining
+    : remaining;
 
             return (
               <div
@@ -215,6 +221,17 @@ const extraMonths =
   Tempo restante:{" "}
   {yearsRemaining} anos e{" "}
   {extraMonths} meses
+</p>
+
+<p className="text-green-400 mb-4">
+  Aporte necessário: R${" "}
+  {monthlyContribution.toLocaleString(
+    "pt-BR",
+    {
+      maximumFractionDigits: 0,
+    }
+  )}
+  /mês
 </p>
 
                 <div className="w-full bg-zinc-800 rounded-full h-3">
