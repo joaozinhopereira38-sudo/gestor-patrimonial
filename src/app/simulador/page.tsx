@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { usePortfolioStore } from "@/store/portfolioStore";
+
 import {
   LineChart,
   Line,
@@ -12,11 +14,22 @@ import {
 } from "recharts";
 
 export default function SimuladorPage() {
-  const [initialValue, setInitialValue] = useState("");
+  const {
+  assets,
+  goals,
+} = usePortfolioStore();
+
+const patrimonioAtual =
+  assets.reduce(
+    (acc, asset) =>
+      acc + asset.value,
+    0
+  );
   const [monthlyValue, setMonthlyValue] = useState("");
   const [years, setYears] = useState("");
   const [rate, setRate] = useState("");
-  const initial = Number(initialValue);
+  const initial =
+  patrimonioAtual;
 const monthly = Number(monthlyValue);
 const annualRate = Number(rate) / 100;
 
@@ -62,6 +75,40 @@ const targetYears =
 
 const remainingMonths =
   targetMonths % 12;
+
+  const goalProjections =
+  goals.map((goal) => {
+    let value =
+      patrimonioAtual;
+
+    let months = 0;
+
+    while (
+      value < goal.target &&
+      months < 1200
+    ) {
+      value =
+        value *
+          (1 + monthlyRate) +
+        monthly;
+
+      months++;
+    }
+
+    const projectedDate =
+      new Date();
+
+    projectedDate.setMonth(
+      projectedDate.getMonth() +
+        months
+    );
+
+    return {
+      ...goal,
+      months,
+      projectedDate,
+    };
+  });
 
   const chartData = [];
 
@@ -110,16 +157,16 @@ for (
         </div>
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 space-y-5">
+         
+         <div className="bg-zinc-800 p-4 rounded-xl">
+  <p className="text-zinc-400 mb-2">
+    Patrimônio Atual
+  </p>
 
-          <input
-            type="number"
-            placeholder="Valor Inicial"
-            value={initialValue}
-            onChange={(e) =>
-              setInitialValue(e.target.value)
-            }
-            className="w-full p-4 rounded-xl bg-zinc-800"
-          />
+  <h2 className="text-2xl font-bold">
+    R$ {patrimonioAtual.toLocaleString("pt-BR")}
+  </h2>
+</div>
 
           <input
             type="number"
@@ -150,17 +197,7 @@ for (
             }
             className="w-full p-4 rounded-xl bg-zinc-800"
           />
-
-<input
-  type="number"
-  placeholder="Rentabilidade anual (%)"
-  value={rate}
-  onChange={(e) =>
-    setRate(e.target.value)
-  }
-  className="w-full p-4 rounded-xl bg-zinc-800"
-/>
-
+          
 <div className="mt-8 pt-8 border-t border-zinc-800">
   <p className="text-zinc-400 mb-2">
     Patrimônio Projetado
@@ -215,6 +252,48 @@ for (
         strokeWidth={4}
       />
     </LineChart>
+  </div>
+</div>
+
+<div className="mt-10">
+  <h3 className="text-2xl font-bold mb-6">
+    Metas Projetadas
+  </h3>
+
+  <div className="space-y-4">
+    {goalProjections.map(
+      (goal) => (
+        <div
+          key={goal.id}
+          className="
+            bg-zinc-800
+            p-4
+            rounded-2xl
+          "
+        >
+          <h4 className="font-bold">
+            {goal.title}
+          </h4>
+
+          <p className="text-zinc-400">
+            Meta:
+            R$ {goal.target.toLocaleString("pt-BR")}
+          </p>
+
+          <p className="text-green-400">
+            Previsão:
+            {" "}
+            {goal.projectedDate.toLocaleDateString(
+              "pt-BR",
+              {
+                month: "long",
+                year: "numeric",
+              }
+            )}
+          </p>
+        </div>
+      )
+    )}
   </div>
 </div>
 
