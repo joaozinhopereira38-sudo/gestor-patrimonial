@@ -47,6 +47,10 @@ type PortfolioStore = {
   goal: Goal
 ) => void;
 
+removeGoal: (
+  id: number
+) => void;
+
   updateHistory: (total: number) => void;
 
   removeAsset: (id: number) => void;
@@ -134,6 +138,14 @@ export const usePortfolioStore =
       ...state.goals,
       goal,
     ],
+  })),
+
+  removeGoal: (id) =>
+  set((state) => ({
+    goals: state.goals.filter(
+      (goal) =>
+        goal.id !== id
+    ),
   })),
 
         removeAsset: (id) =>

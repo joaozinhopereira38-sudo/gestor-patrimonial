@@ -4,6 +4,8 @@ import { usePortfolioStore } from "@/store/portfolioStore";
 
 import { useState } from "react";
 
+import { useOnboardingStore } from "@/store/onboardingStore";
+
 export default function MetasPage() {
   const {
   assets,
@@ -11,6 +13,10 @@ export default function MetasPage() {
   addGoal,
   removeGoal,
 } = usePortfolioStore();
+
+const {
+  incomeRange,
+} = useOnboardingStore();
 
 const [title, setTitle] =
   useState("");
@@ -136,14 +142,20 @@ const [deadline, setDeadline] =
 
         <div className="space-y-6">
           {goals.map((goal) => {
+            const hasDeadline =
+  goal.deadline &&
+  goal.deadline.trim() !== "";
+
               const progress =
               (total / goal.target) * 100;
 
               const remaining =
               goal.target - total;
 
-              const deadlineDate =
-              new Date(goal.deadline);
+             const deadlineDate =
+  hasDeadline
+    ? new Date(goal.deadline)
+    : new Date();
 
               const today =
               new Date();
@@ -171,6 +183,68 @@ const [deadline, setDeadline] =
     ? remaining /
       monthsRemaining
     : remaining;
+
+    let monthlyIncome = 0;
+
+switch (incomeRange) {
+  case "ate_3k":
+    monthlyIncome = 3000;
+    break;
+
+  case "3k_10k":
+    monthlyIncome = 10000;
+    break;
+
+  case "10k_30k":
+    monthlyIncome = 30000;
+    break;
+
+  case "30k_plus":
+    monthlyIncome = 50000;
+    break;
+
+  default:
+    monthlyIncome = 0;
+}
+
+const effort =
+  monthlyIncome > 0
+    ? (monthlyContribution /
+        monthlyIncome) *
+      100
+    : 0;
+
+    let viability = "";
+let viabilityColor = "";
+
+if (effort <= 20) {
+  viability = "🟢 Meta viável";
+  viabilityColor =
+    "text-green-400";
+} else if (effort <= 40) {
+  viability =
+    "🟡 Meta desafiadora";
+  viabilityColor =
+    "text-yellow-400";
+} else {
+  viability =
+    "🔴 Meta agressiva";
+  viabilityColor =
+    "text-red-400";
+}
+
+const recommendedMonths =
+  monthlyIncome > 0
+    ? Math.ceil(
+        remaining /
+          (monthlyIncome * 0.2)
+      )
+    : 0;
+
+const recommendedYears =
+  Math.ceil(
+    recommendedMonths / 12
+  );
 
             return (
               <div
@@ -207,7 +281,10 @@ const [deadline, setDeadline] =
                 </p>
 
                 <p className="text-zinc-500 mb-4">
-   Prazo: {goal.deadline}
+  Prazo:{" "}
+  {hasDeadline
+    ? goal.deadline
+    : "Não definido"}
 </p>
 
 <p className="text-zinc-400 mb-4">
@@ -217,11 +294,13 @@ const [deadline, setDeadline] =
   )}
 </p>
 
-<p className="text-zinc-400 mb-4">
-  Tempo restante:{" "}
-  {yearsRemaining} anos e{" "}
-  {extraMonths} meses
-</p>
+{hasDeadline && (
+  <p className="text-zinc-400 mb-4">
+    Tempo restante:{" "}
+    {yearsRemaining} anos e{" "}
+    {extraMonths} meses
+  </p>
+)}
 
 <p className="text-green-400 mb-4">
   Aporte necessário: R${" "}
@@ -233,6 +312,19 @@ const [deadline, setDeadline] =
   )}
   /mês
 </p>
+
+<p
+  className={`${viabilityColor} mb-4`}
+>
+  {viability}
+</p>
+
+{hasDeadline && (
+  <p className="text-zinc-400 mb-4">
+    Prazo recomendado:
+    {recommendedYears} anos
+  </p>
+)}
 
                 <div className="w-full bg-zinc-800 rounded-full h-3">
                   <div
