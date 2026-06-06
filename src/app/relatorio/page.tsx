@@ -2,10 +2,21 @@
 
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { useOnboardingStore } from "@/store/onboardingStore";
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    Tooltip,
+    CartesianGrid,
+  } from "recharts";
 
 export default function RelatorioPage() {
-  const { assets, goals } =
-    usePortfolioStore();
+    const {
+        assets,
+        goals,
+        history,
+      } = usePortfolioStore();
 
   const {
     riskProfile,
@@ -183,6 +194,38 @@ const score =
       57%
     </p>
 
+  </div>
+</div>
+
+<div className="bg-zinc-900 p-8 rounded-3xl mb-6">
+  <h2 className="text-2xl font-bold mb-6">
+    Evolução Patrimonial
+  </h2>
+
+  <div className="flex justify-center">
+    <LineChart
+      width={700}
+      height={300}
+      data={history}
+    >
+      <CartesianGrid
+        strokeDasharray="3 3"
+        stroke="#3f3f46"
+      />
+
+      <XAxis dataKey="date" />
+
+      <YAxis />
+
+      <Tooltip />
+
+      <Line
+        type="monotone"
+        dataKey="total"
+        stroke="#22c55e"
+        strokeWidth={4}
+      />
+    </LineChart>
   </div>
 </div>
 
