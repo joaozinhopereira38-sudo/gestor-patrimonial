@@ -18,6 +18,21 @@ export default function RelatorioPage() {
       0
     );
 
+    const categories =
+  [...new Set(
+    assets.map(
+      (asset) =>
+        asset.category
+    )
+  )];
+
+const score =
+  Math.min(
+    40 +
+      categories.length * 10,
+    100
+  );
+
   return (
     <main className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-7xl mx-auto">
@@ -36,7 +51,7 @@ export default function RelatorioPage() {
           <h2 className="text-2xl font-bold mb-4">
             Resumo
           </h2>
-
+       
           <p>
             Patrimônio:
             R$ {patrimonio.toLocaleString("pt-BR")}
@@ -51,7 +66,35 @@ export default function RelatorioPage() {
             Perfil:
             {riskProfile || "Não definido"}
           </p>
+
+          <p>
+  Score da Carteira:
+  {score}/100
+</p>
         </div>
+
+        <div className="bg-zinc-900 p-8 rounded-3xl mb-6">
+  <h2 className="text-2xl font-bold mb-4">
+    Recomendações
+  </h2>
+
+  {!assets.some(
+    (asset) =>
+      asset.category ===
+      "Internacional"
+  ) && (
+    <p className="text-yellow-400">
+      ⚠ Considere adicionar
+      ativos internacionais.
+    </p>
+  )}
+
+  {categories.length >= 4 && (
+    <p className="text-green-400">
+      ✓ Boa diversificação.
+    </p>
+  )}
+</div>
 
         <div className="bg-zinc-900 p-8 rounded-3xl">
           <h2 className="text-2xl font-bold mb-4">
