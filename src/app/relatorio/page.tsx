@@ -45,6 +45,21 @@ const score =
           <h1 className="text-5xl font-bold">
             Relatório Patrimonial
           </h1>
+
+          <div className="mt-6">
+  <button
+    className="
+      bg-white
+      text-black
+      px-6
+      py-3
+      rounded-xl
+      font-semibold
+    "
+  >
+    Gerar Relatório PDF
+  </button>
+</div>
         </div>
 
         <div className="bg-zinc-900 p-8 rounded-3xl mb-6">
@@ -132,7 +147,7 @@ const score =
 </p>
 
 <p>
-  Progresso:
+  Progresso:{" "}
   {(
     (patrimonio / goal.target) *
     100
