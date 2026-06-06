@@ -55,6 +55,13 @@ export default function Sidebar() {
   Análise
 </Link>
 
+<Link
+  href="/relatorio"
+  className="block text-zinc-300 hover:text-white transition"
+>
+  Relatório
+</Link>
+
         <Link
           href="/configuracoes"
           className="block text-zinc-300 hover:text-white transition"
