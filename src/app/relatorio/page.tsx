@@ -33,6 +33,18 @@ const score =
     100
   );
 
+  const categoryTotals =
+  assets.reduce(
+    (acc, asset) => {
+      acc[asset.category] =
+        (acc[asset.category] || 0) +
+        asset.value;
+
+      return acc;
+    },
+    {} as Record<string, number>
+  );
+
   return (
     <main className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-7xl mx-auto">
@@ -106,6 +118,28 @@ const score =
 
         <div className="bg-zinc-900 p-8 rounded-3xl mb-6">
   <h2 className="text-2xl font-bold mb-4">
+    Distribuição da Carteira
+  </h2>
+
+  {Object.entries(
+    categoryTotals
+  ).map(
+    ([category, value]) => (
+      <p key={category}>
+        {category}:{" "}
+        {(
+          (value /
+            patrimonio) *
+          100
+        ).toFixed(1)}
+        %
+      </p>
+    )
+  )}
+</div>
+
+        <div className="bg-zinc-900 p-8 rounded-3xl mb-6">
+  <h2 className="text-2xl font-bold mb-4">
     Recomendações
   </h2>
 
@@ -125,6 +159,31 @@ const score =
       ✓ Boa diversificação.
     </p>
   )}
+</div>
+
+<div className="bg-zinc-900 p-8 rounded-3xl mb-6">
+  <h2 className="text-2xl font-bold mb-4">
+    Diagnóstico
+  </h2>
+
+  <div className="space-y-3">
+
+    <p>
+      Diversificação:
+      razoável
+    </p>
+
+    <p>
+      Exposição internacional:
+      insuficiente
+    </p>
+
+    <p>
+      Compatibilidade com perfil:
+      57%
+    </p>
+
+  </div>
 </div>
 
         <div className="bg-zinc-900 p-8 rounded-3xl">
