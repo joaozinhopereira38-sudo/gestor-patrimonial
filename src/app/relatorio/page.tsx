@@ -10,6 +10,7 @@ import {
     Tooltip,
     CartesianGrid,
   } from "recharts";
+import jsPDF from "jspdf";
 
 export default function RelatorioPage() {
     const {
@@ -56,6 +57,41 @@ const score =
     {} as Record<string, number>
   );
 
+  const generatePDF = () => {
+  const doc = new jsPDF();
+
+  doc.setFontSize(20);
+  doc.text(
+    "Relatório Patrimonial",
+    20,
+    20
+  );
+
+  doc.setFontSize(12);
+
+  doc.text(
+    `Patrimônio: R$ ${patrimonio.toLocaleString("pt-BR")}`,
+    20,
+    40
+  );
+
+  doc.text(
+    `Perfil: ${riskProfile}`,
+    20,
+    50
+  );
+
+  doc.text(
+    `Score: ${score}/100`,
+    20,
+    60
+  );
+
+  doc.save(
+    "relatorio-patrimonial.pdf"
+  );
+};
+
   return (
     <main className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-7xl mx-auto">
@@ -71,17 +107,18 @@ const score =
 
           <div className="mt-6">
   <button
-    className="
-      bg-white
-      text-black
-      px-6
-      py-3
-      rounded-xl
-      font-semibold
-    "
-  >
-    Gerar Relatório PDF
-  </button>
+  onClick={generatePDF}
+  className="
+    bg-white
+    text-black
+    px-6
+    py-3
+    rounded-xl
+    font-semibold
+  "
+>
+  Gerar Relatório PDF
+</button>
 </div>
         </div>
 
