@@ -52,25 +52,41 @@ const score =
             Resumo
           </h2>
        
-          <p>
-            Patrimônio:
-            R$ {patrimonio.toLocaleString("pt-BR")}
-          </p>
+          <div className="space-y-3">
+  <p>
+    <span className="text-zinc-400">
+      Patrimônio:
+    </span>{" "}
+    R$ {patrimonio.toLocaleString("pt-BR")}
+  </p>
 
-          <p>
-            Ativos:
-            {assets.length}
-          </p>
+  <p>
+    <span className="text-zinc-400">
+      Ativos:
+    </span>{" "}
+    {assets.length}
+  </p>
 
-          <p>
-            Perfil:
-            {riskProfile || "Não definido"}
-          </p>
+  <p>
+    <span className="text-zinc-400">
+      Perfil:
+    </span>{" "}
+    {riskProfile}
+  </p>
 
-          <p>
-  Score da Carteira:
-  {score}/100
+  <p>
+    <span className="text-zinc-400">
+      Score:
+    </span>{" "}
+    {score}/100
+  </p>
+
+  <p>
+  Compatibilidade:
+  57%
 </p>
+
+</div>
         </div>
 
         <div className="bg-zinc-900 p-8 rounded-3xl mb-6">
@@ -111,9 +127,18 @@ const score =
               </p>
 
               <p>
-                Meta:
-                R$ {goal.target.toLocaleString("pt-BR")}
-              </p>
+  Meta:
+  R$ {goal.target.toLocaleString("pt-BR")}
+</p>
+
+<p>
+  Progresso:
+  {(
+    (patrimonio / goal.target) *
+    100
+  ).toFixed(1)}
+  %
+</p>
             </div>
           ))}
         </div>
