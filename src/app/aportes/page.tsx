@@ -7,9 +7,10 @@ import { usePortfolioStore } from "@/store/portfolioStore";
 export default function AportesPage() {
 
   const {
-    aportes,
-    addAporte,
-  } = usePortfolioStore();
+  aportes,
+  addAporte,
+  applyAporte,
+} = usePortfolioStore();
 
   const totalAportado = aportes.reduce(
     (acc, aporte) => acc + aporte.value,
@@ -34,6 +35,9 @@ export default function AportesPage() {
   const [description, setDescription] =
     useState("");
 
+    const [category, setCategory] =
+  useState("ETF");
+
     const handleAddAporte = () => {
       if (!value) return;
     
@@ -45,9 +49,15 @@ export default function AportesPage() {
           "pt-BR"
         ),
       });
+
+      applyAporte(
+  category,
+  Number(value)
+);
     
       setValue("");
       setDescription("");
+      setCategory("ETF");
     };
 
   return (
@@ -160,6 +170,36 @@ export default function AportesPage() {
               mb-4
             "
           />
+
+          <select
+  value={category}
+  onChange={(e) =>
+    setCategory(e.target.value)
+  }
+  className="
+    w-full
+    p-4
+    rounded-xl
+    bg-zinc-800
+    mb-4
+  "
+>
+  <option value="Renda Fixa">
+    Renda Fixa
+  </option>
+
+  <option value="FII">
+    FII
+  </option>
+
+  <option value="ETF">
+    ETF
+  </option>
+
+  <option value="Internacional">
+    Internacional
+  </option>
+</select>
 
 <button
   onClick={handleAddAporte}

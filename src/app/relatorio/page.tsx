@@ -57,6 +57,62 @@ const score =
     {} as Record<string, number>
   );
 
+  const idealPortfolio =
+  riskProfile === "conservador"
+    ? [
+        { category: "Renda Fixa", ideal: 70 },
+        { category: "FII", ideal: 15 },
+        { category: "ETF", ideal: 10 },
+        { category: "Internacional", ideal: 5 },
+      ]
+    : riskProfile === "arrojado"
+    ? [
+        { category: "Renda Fixa", ideal: 20 },
+        { category: "FII", ideal: 20 },
+        { category: "ETF", ideal: 40 },
+        { category: "Internacional", ideal: 20 },
+      ]
+    : [
+        { category: "Renda Fixa", ideal: 40 },
+        { category: "FII", ideal: 20 },
+        { category: "ETF", ideal: 30 },
+        { category: "Internacional", ideal: 10 },
+      ];
+
+const categoryPercentages =
+  Object.entries(categoryTotals).map(
+    ([category, value]) => ({
+      category,
+      percentage:
+        (value / patrimonio) * 100,
+    })
+  );
+
+const adherence =
+  idealPortfolio.reduce(
+    (acc, item) => {
+      const current =
+        categoryPercentages.find(
+          (c) =>
+            c.category === item.category
+        )?.percentage || 0;
+
+      return (
+        acc +
+        Math.abs(
+          item.ideal - current
+        )
+      );
+    },
+    0
+  );
+
+const profileCompatibility =
+  Math.max(
+    0,
+    100 - adherence
+  );
+
   const generatePDF = () => {
   const doc = new jsPDF();
 
@@ -87,8 +143,10 @@ const score =
     60
   );
 
-  doc.text(
-  `Compatibilidade: 57%`,
+ doc.text(
+  `Compatibilidade: ${profileCompatibility.toFixed(
+    0
+  )}%`,
   20,
   70
 );
@@ -232,7 +290,8 @@ goals.forEach(
 
   <p>
   Compatibilidade:
-  57%
+  {" "}
+  {profileCompatibility.toFixed(0)}%
 </p>
 
 </div>
@@ -301,9 +360,10 @@ goals.forEach(
     </p>
 
     <p>
-      Compatibilidade com perfil:
-      57%
-    </p>
+  Compatibilidade com perfil:
+  {" "}
+  {profileCompatibility.toFixed(0)}%
+</p>
 
   </div>
 </div>

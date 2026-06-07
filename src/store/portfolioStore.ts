@@ -39,6 +39,11 @@ type PortfolioStore = {
 
   addAsset: (asset: Asset) => void;
 
+  applyAporte: (
+    category: string,
+    value: number
+  ) => void;
+
   addAporte: (
     aporte: Aporte
   ) => void;
@@ -84,24 +89,7 @@ export const usePortfolioStore =
           },
         ],
 
-        history: [
-          {
-            date: "Jan",
-            total: 12000,
-          },
-          {
-            date: "Fev",
-            total: 18000,
-          },
-          {
-            date: "Mar",
-            total: 22000,
-          },
-          {
-            date: "Abr",
-            total: 28000,
-          },
-        ],
+        history: [],
 
         aportes: [],
 
@@ -123,7 +111,25 @@ export const usePortfolioStore =
               asset,
             ],
           })),
-
+          
+          applyAporte: (
+            category,
+            value
+          ) =>
+            set((state) => ({
+              assets: state.assets.map(
+                (asset) =>
+                  asset.category === category
+                    ? {
+                        ...asset,
+                        value:
+                          asset.value +
+                          value,
+                      }
+                    : asset
+              ),
+            })),
+         
         addAporte: (aporte) =>
           set((state) => ({
             aportes: [
