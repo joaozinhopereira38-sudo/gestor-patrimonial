@@ -56,6 +56,13 @@ export default function Sidebar() {
 </Link>
 
 <Link
+  href="/assistente"
+  className="block text-zinc-300 hover:text-white transition"
+>
+  Assistente IA
+</Link>
+
+<Link
   href="/relatorio"
   className="block text-zinc-300 hover:text-white transition"
 >
