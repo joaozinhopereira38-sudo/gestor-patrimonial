@@ -87,6 +87,80 @@ const score =
     60
   );
 
+  doc.text(
+  `Compatibilidade: 57%`,
+  20,
+  70
+);
+
+doc.text(
+  "Distribuição da Carteira",
+  20,
+  90
+);
+
+let yPosition = 100;
+
+Object.entries(
+  categoryTotals
+).forEach(
+  ([category, value]) => {
+    doc.text(
+      `${category}: ${(
+        (value /
+          patrimonio) *
+        100
+      ).toFixed(1)}%`,
+      20,
+      yPosition
+    );
+
+    yPosition += 10;
+  }
+);
+
+doc.text(
+  "Recomendações",
+  20,
+  yPosition + 10
+);
+
+doc.text(
+  "- Adicionar ativos internacionais",
+  20,
+  yPosition + 20
+);
+
+let goalY =
+  yPosition + 40;
+
+doc.text(
+  "Metas",
+  20,
+  goalY
+);
+
+goalY += 10;
+
+goals.forEach(
+  (goal) => {
+    const progress =
+      (
+        (patrimonio /
+          goal.target) *
+        100
+      ).toFixed(1);
+
+    doc.text(
+      `${goal.title} - ${progress}%`,
+      20,
+      goalY
+    );
+
+    goalY += 10;
+  }
+);
+
   doc.save(
     "relatorio-patrimonial.pdf"
   );
