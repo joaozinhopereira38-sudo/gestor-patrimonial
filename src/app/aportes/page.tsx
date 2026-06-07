@@ -10,7 +10,16 @@ export default function AportesPage() {
   aportes,
   addAporte,
   applyAporte,
+  updateHistory,
+  assets,
 } = usePortfolioStore();
+
+const patrimonioAtual =
+  assets.reduce(
+    (acc, asset) =>
+      acc + asset.value,
+    0
+  );
 
   const totalAportado = aportes.reduce(
     (acc, aporte) => acc + aporte.value,
@@ -53,6 +62,11 @@ export default function AportesPage() {
       applyAporte(
   category,
   Number(value)
+);
+
+updateHistory(
+  patrimonioAtual +
+    Number(value)
 );
     
       setValue("");
