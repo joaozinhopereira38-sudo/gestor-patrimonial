@@ -17,6 +17,91 @@ export default function IAPage() {
       0
     );
 
+    const categories =
+  [...new Set(
+    assets.map(
+      (asset) =>
+        asset.category
+    )
+  )];
+
+let score = 50;
+
+/* Diversificação */
+
+if (categories.length >= 4) {
+  score += 20;
+}
+else if (
+  categories.length >= 3
+) {
+  score += 10;
+}
+
+/* Internacional */
+
+if (
+  assets.some(
+    (asset) =>
+      asset.category ===
+      "Internacional"
+  )
+) {
+  score += 10;
+}
+
+/* Patrimônio */
+
+if (patrimonio >= 100000) {
+  score += 10;
+}
+else if (
+  patrimonio >= 50000
+) {
+  score += 5;
+}
+
+score =
+  Math.min(score, 100);
+
+  const diagnostics: string[] = [];
+
+if (categories.length >= 3) {
+  diagnostics.push(
+    "✓ Boa diversificação"
+  );
+} else {
+  diagnostics.push(
+    "⚠ Carteira pouco diversificada"
+  );
+}
+
+if (
+  assets.some(
+    (asset) =>
+      asset.category ===
+      "Internacional"
+  )
+) {
+  diagnostics.push(
+    "✓ Possui exposição internacional"
+  );
+} else {
+  diagnostics.push(
+    "⚠ Ausência de ativos internacionais"
+  );
+}
+
+if (patrimonio >= 50000) {
+  diagnostics.push(
+    "✓ Patrimônio em crescimento"
+  );
+} else {
+  diagnostics.push(
+    "⚠ Patrimônio ainda em fase de acumulação"
+  );
+}
+
   return (
     <main className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-7xl mx-auto">
@@ -50,6 +135,43 @@ export default function IAPage() {
             {" "}
             {goals.length}
           </p>
+
+          <div className="mt-8 pt-8 border-t border-zinc-800">
+
+  <p className="text-zinc-400 mb-2">
+    Score IA
+  </p>
+
+  <h2 className="text-5xl font-bold text-green-400">
+    {score}/100
+  </h2>
+
+  <div className="mt-8">
+
+  <h3 className="text-2xl font-bold mb-4">
+    Diagnóstico
+  </h3>
+
+  <div className="space-y-3">
+    {diagnostics.map(
+      (item, index) => (
+        <div
+          key={index}
+          className="
+            bg-zinc-800
+            p-4
+            rounded-xl
+          "
+        >
+          {item}
+        </div>
+      )
+    )}
+  </div>
+
+</div>
+
+</div>
 
         </div>
 
