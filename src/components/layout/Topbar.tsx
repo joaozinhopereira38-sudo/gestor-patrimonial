@@ -1,4 +1,17 @@
+"use client";
+
+import { usePortfolioStore } from "@/store/portfolioStore";
+
 export default function Topbar() {
+  const { assets } =
+    usePortfolioStore();
+
+  const patrimonio =
+    assets.reduce(
+      (acc, asset) =>
+        acc + asset.value,
+      0
+    );
   return (
     <header className="w-full h-20 border-b border-zinc-800 bg-zinc-950 flex items-center justify-between px-8">
       <div>
@@ -11,7 +24,15 @@ export default function Topbar() {
         <div className="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-xl">
           <p className="text-sm text-zinc-400">Patrimônio</p>
 
-          <p className="font-bold text-white">R$ 12.073,47</p>
+          <p className="font-bold text-white">
+  R${" "}
+  {patrimonio.toLocaleString(
+    "pt-BR",
+    {
+      minimumFractionDigits: 2,
+    }
+  )}
+</p>
         </div>
 
         <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center font-bold">

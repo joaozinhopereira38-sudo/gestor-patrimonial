@@ -198,22 +198,7 @@ if (
   <p className="text-zinc-400 mb-2">
     Meta Patrimonial
   </p>
-
-  <button
-  onClick={() => setGoal(2000000)}
-  className="
-    mb-4
-    bg-white
-    text-black
-    px-4
-    py-2
-    rounded-xl
-    font-semibold
-  "
->
-  Alterar Meta
-</button>
-
+ 
   <h2 className="text-3xl font-bold mb-2">
     R$ {goal.toLocaleString("pt-BR")}
   </h2>
