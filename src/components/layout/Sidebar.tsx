@@ -56,11 +56,20 @@ export default function Sidebar() {
 </Link>
 
 <Link
+  href="/ia"
+  className="block text-zinc-300 hover:text-white transition"
+>
+  IA Patrimonial
+</Link>
+
+{/*
+<Link
   href="/assistente"
   className="block text-zinc-300 hover:text-white transition"
 >
   Assistente IA
 </Link>
+*/}
 
 <Link
   href="/relatorio"
