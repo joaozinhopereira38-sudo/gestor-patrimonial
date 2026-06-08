@@ -104,31 +104,82 @@ export const usePortfolioStore =
         goal: 1000000,
 
         addAsset: (asset) =>
+  set((state) => {
+    const newAssets = [
+      ...state.assets,
+      asset,
+    ];
 
-          set((state) => ({
-            assets: [
-              ...state.assets,
-              asset,
-            ],
-          })),
+    const total =
+      newAssets.reduce(
+        (acc, item) =>
+          acc + item.value,
+        0
+      );
+
+    return {
+      assets: newAssets,
+
+      history: [
+        ...state.history,
+        {
+          date: new Date().toLocaleDateString(
+            "pt-BR",
+            {
+              day: "2-digit",
+              month: "2-digit",
+            }
+          ),
+          total,
+        },
+      ],
+    };
+  }),
           
           applyAporte: (
-            category,
-            value
-          ) =>
-            set((state) => ({
-              assets: state.assets.map(
-                (asset) =>
-                  asset.category === category
-                    ? {
-                        ...asset,
-                        value:
-                          asset.value +
-                          value,
-                      }
-                    : asset
-              ),
-            })),
+  category,
+  value
+) =>
+  set((state) => {
+    const updatedAssets =
+      state.assets.map(
+        (asset) =>
+          asset.category ===
+          category
+            ? {
+                ...asset,
+                value:
+                  asset.value +
+                  value,
+              }
+            : asset
+      );
+
+    const total =
+      updatedAssets.reduce(
+        (acc, item) =>
+          acc + item.value,
+        0
+      );
+
+    return {
+      assets: updatedAssets,
+
+      history: [
+        ...state.history,
+        {
+          date: new Date().toLocaleDateString(
+            "pt-BR",
+            {
+              day: "2-digit",
+              month: "2-digit",
+            }
+          ),
+          total,
+        },
+      ],
+    };
+  }),
          
         addAporte: (aporte) =>
           set((state) => ({
@@ -155,12 +206,38 @@ export const usePortfolioStore =
   })),
 
         removeAsset: (id) =>
-          set((state) => ({
-            assets: state.assets.filter(
-              (asset) =>
-                asset.id !== id
-            ),
-          })),
+  set((state) => {
+    const newAssets =
+      state.assets.filter(
+        (asset) =>
+          asset.id !== id
+      );
+
+    const total =
+      newAssets.reduce(
+        (acc, item) =>
+          acc + item.value,
+        0
+      );
+
+    return {
+      assets: newAssets,
+
+      history: [
+        ...state.history,
+        {
+          date: new Date().toLocaleDateString(
+            "pt-BR",
+            {
+              day: "2-digit",
+              month: "2-digit",
+            }
+          ),
+          total,
+        },
+      ],
+    };
+  }),
 
         setGoal: (value) =>
           set(() => ({
@@ -168,21 +245,46 @@ export const usePortfolioStore =
           })),
 
           updateHistory: (total) =>
-            set((state) => ({
-              history: [
-                ...state.history,
-                {
-                  date: new Date().toLocaleDateString(
-                    "pt-BR",
-                    {
-                      day: "2-digit",
-                      month: "2-digit",
-                    }
-                  ),
-                  total,
-                },
-              ],
-            })),
+  set((state) => {
+    const today =
+      new Date().toLocaleDateString(
+        "pt-BR",
+        {
+          day: "2-digit",
+          month: "2-digit",
+        }
+      );
+
+    const existingIndex =
+      state.history.findIndex(
+        (item) =>
+          item.date === today
+      );
+
+    let updatedHistory =
+      [...state.history];
+
+    if (
+      existingIndex >= 0
+    ) {
+      updatedHistory[
+        existingIndex
+      ] = {
+        date: today,
+        total,
+      };
+    } else {
+      updatedHistory.push({
+        date: today,
+        total,
+      });
+    }
+
+    return {
+      history:
+        updatedHistory,
+    };
+  }),
             
       }),
       {
